@@ -5,6 +5,28 @@
 
 ## 📋 Liste des cahiers des charges disponibles
 
+## 🟢 **VERSIONS SIMPLIFIÉES (Recommandées pour débutants)**
+
+### 🚀 **Système de téléportation entre villes**
+**Fichier** : `Cahier_des_charges_SIMPLE_Teleportation.md`  
+**Complexité** : ⭐☆☆☆☆ (Débutant)  
+**Durée estimée** : 4 jours  
+**Description** : Téléportation simple entre villes découvertes avec coût et cooldown.
+
+### 💬 **Système de messages privés**
+**Fichier** : `Cahier_des_charges_SIMPLE_Messages_Prives.md`  
+**Complexité** : ⭐⭐☆☆☆ (Débutant-Intermédiaire)  
+**Durée estimée** : 4-5 jours  
+**Description** : Messages privés avec stockage hors ligne et notifications simples.
+
+### 🛒 **Système de boutique personnelle**
+**Fichier** : `Cahier_des_charges_SIMPLE_Boutique_Personnelle.md`  
+**Complexité** : ⭐⭐☆☆☆ (Débutant-Intermédiaire)  
+**Durée estimée** : 5-6 jours  
+**Description** : Boutiques de joueurs pour vendre des objets avec interface GUI simple.
+
+## 🟡 **VERSIONS COMPLÈTES (Pour candidats expérimentés)**
+
 ### 🏨 **Système de location de chambres de taverne**
 **Fichier** : `Cahier_des_charges_Location_Chambres_Taverne.md`  
 **Complexité** : ⭐⭐☆☆☆ (Débutant-Intermédiaire)  
@@ -39,22 +61,24 @@
 
 ## 🎯 Guide de sélection pour les candidats
 
-### Pour candidats débutants (0-1 an d'expérience)
+### 🟢 Pour candidats débutants (0-1 an d'expérience)
 **Recommandé** : 
-- ✅ Système de location de chambres de taverne
-- ⚠️ Partie basique du système de guildes (sans les fonctionnalités avancées)
+- ✅ **Système de téléportation entre villes** (le plus simple)
+- ✅ **Système de messages privés** (bon exercice de BDD)
+- ✅ **Système de boutique personnelle** (introduction au GUI et économie)
 
-### Pour candidats intermédiaires (1-3 ans d'expérience)
+### 🟡 Pour candidats intermédiaires (1-2 ans d'expérience)
 **Recommandé** :
-- ✅ Système de guildes et partis (complet)
-- ✅ Système de craft et forge
-- ⚠️ Système de donjons (version simplifiée)
+- ✅ **Système de location de chambres de taverne**
+- ✅ **Une version simplifiée du système de guildes** (sans les guerres)
+- ⚠️ **Combinaison de 2 projets simples**
 
-### Pour candidats avancés (3+ ans d'expérience)
+### 🔴 Pour candidats avancés (2+ ans d'expérience)
 **Recommandé** :
-- ✅ Système de donjons instanciés (complet)
-- ✅ Système de quêtes et PNJ (complet)
-- ✅ Combinaison de plusieurs systèmes
+- ✅ **Système de guildes et partis** (complet)
+- ✅ **Système de craft et forge**
+- ✅ **Système de donjons instanciés** (pour les experts)
+- ✅ **Système de quêtes et PNJ** (le plus complexe)
 
 ---
 
@@ -62,6 +86,11 @@
 
 | Cahier des charges | Base de données | Interface GUI | API/Intégrations | Algorithmie | Architecture |
 |-------------------|----------------|---------------|------------------|-------------|--------------|
+| **SIMPLES** | | | | | |
+| Téléportation villes | ⭐☆☆ | ⭐⭐☆ | ⭐☆☆ | ⭐☆☆ | ⭐☆☆ |
+| Messages privés | ⭐⭐☆ | ⭐☆☆ | ⭐☆☆ | ⭐☆☆ | ⭐⭐☆ |
+| Boutique personnelle | ⭐⭐☆ | ⭐⭐⭐ | ⭐⭐☆ | ⭐⭐☆ | ⭐⭐☆ |
+| **COMPLEXES** | | | | | |
 | Location tavernes | ⭐⭐☆ | ⭐⭐☆ | ⭐⭐☆ | ⭐⭐☆ | ⭐⭐☆ |
 | Guildes & partis | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 | Donjons instanciés | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
