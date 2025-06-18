@@ -46,7 +46,7 @@ Dans l'univers de Sword Art Online, les tavernes constituent des lieux de repos 
 ## 3. Spécifications techniques
 
 ### 3.1 Technologies requises
-- **Plugin Minecraft** : Paper 1.20.3
+- **Plugin Minecraft** : Paper 1.21.3
 - **Base de données** : MySQL pour la persistance
 - **Économie** : Integration avec Vault API
 - **Permissions** : Système de permissions compatible
