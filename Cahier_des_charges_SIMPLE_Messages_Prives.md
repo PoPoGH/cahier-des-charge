@@ -1,4 +1,4 @@
-# Cahier des charges - Système de messages privés SAO
+# Cahier des charges - Système de lettres et courrier SAO
 ## Serveur Minecraft SAO France - Version Simplifiée
 
 ---
@@ -6,223 +6,206 @@
 ## 1. Contexte et objectifs
 
 ### 1.1 Contexte
-Dans SAO, les joueurs peuvent s'envoyer des messages privés même quand ils ne sont pas connectés en même temps. Ce système doit reproduire cette fonctionnalité de manière simple.
+Dans l'univers médiéval-fantastique de SAO, les joueurs communiquent par lettres et courriers, comme dans un vrai MMORPG. Le système utilise des objets physiques (papier, plume) pour créer une expérience immersive sans commandes.
 
 ### 1.2 Objectifs
-- Permettre d'envoyer des messages à des joueurs hors ligne
-- Stocker les messages non lus
-- Interface simple pour consulter ses messages
-- Notifications quand on reçoit un nouveau message
+- Système de courrier immersif avec objets physiques
+- Écriture de lettres sur papier avec livre et plume
+- Envoi via des boîtes aux lettres dans les villes
+- Réception automatique dans sa boîte personnelle
 
 ---
 
 ## 2. Fonctionnalités demandées
 
-### 2.1 Fonctionnalités principales
-- **Envoi de messages** : `/msg <joueur> <message>`
-- **Consultation des messages** : `/messages` ou `/msg list`
-- **Messages non lus** : Compteur de nouveaux messages
-- **Historique** : Garder les 50 derniers messages reçus
+### 2.1 Système
+- **Commande unique** : `/lettre <joueur> <message>` - Simple et efficace
+- **Livraison automatique** : Lettre apparaît dans l'inventaire du destinataire
+- **Objet physique** : Vraie lettre (livre signé) avec le message
+- **Coût d'envoi** : 10 cols pour l'envoi (encre et papier)
 
-### 2.2 Notifications
-- Message à la connexion si nouveaux messages
-- Son de notification lors de la réception
-- Indication visuelle dans le chat
+### 2.2 Réception immersive
+- **Item physique** : "Lettre de [expéditeur]" dans l'inventaire
+- **Lecture** : Clic droit pour lire le contenu
+- **Conservation** : Le joueur garde la lettre ou peut la jeter
+- **Notification** : Message à la connexion si nouvelles lettres
+
+### 2.3 Avantages
+- **Une seule commande** à retenir
+- **Objet réel** que le joueur possède
+- **Immersion** sans complexité
+- **Coût économique** intégré
 
 ---
 
 ## 3. Base de données
 
-### 3.1 Table messages
+### 3.1 Table lettres
 ```sql
-CREATE TABLE messages_prives (
+CREATE TABLE lettres (
     id INT PRIMARY KEY AUTO_INCREMENT,
     expediteur VARCHAR(36) NOT NULL,
     destinataire VARCHAR(36) NOT NULL,
     message TEXT NOT NULL,
     date_envoi TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    lu BOOLEAN DEFAULT FALSE
+    livree BOOLEAN DEFAULT FALSE
 );
 ```
 
 ### 3.2 Nettoyage automatique
-- Supprimer les messages de plus de 30 jours
-- Garder maximum 50 messages par joueur
+- Supprimer les lettres livrées de plus de 7 jours
+- Supprimer les lettres non livrées de plus de 30 jours
 
 ---
 
 ## 4. Interface utilisateur
 
-### 4.1 Commandes principales
-- `/msg <joueur> <message>` - Envoyer un message
-- `/messages` - Voir tous ses messages
-- `/messages <joueur>` - Conversation avec un joueur spécifique
-- `/msg clear` - Effacer tous ses messages
+### 4.1 Une seule commande !
+```
+/lettre <joueur> <message>
 
-### 4.2 Interface GUI (bonus)
-- Menu avec liste des conversations
-- Clic pour ouvrir une conversation
-- Bouton pour marquer comme lu
+Exemples:
+/lettre Steve Salut ! Comment ça va ?
+/lettre Alice Merci pour ton aide hier !
+/lettre Bob RDV ce soir à 20h à la taverne
+```
+
+### 4.2 Réception automatique
+```
+Quand le destinataire se connecte:
+1. Message: "Vous avez reçu 2 nouvelles lettres !"
+2. Les lettres apparaissent automatiquement dans son inventaire
+3. Items: "Lettre de Steve", "Lettre d'Alice"
+4. Clic droit sur une lettre → Lecture du message
+```
+
+### 4.3 Lecture d'une lettre
+```
+Clic droit sur "Lettre de Steve" → Ouvre un livre avec:
+
+┌─────────────────────────────────┐
+│         Lettre de Steve         │
+├─────────────────────────────────┤
+│                                 │
+│ Salut ! Comment ça va ?         │
+│                                 │
+│ J'espère que tu vas bien.       │
+│ On se voit bientôt !            │
+│                                 │
+│                                 │
+│         - Steve                 │
+│   18 juin 2025, 14:30          │
+└─────────────────────────────────┘
+```
 
 ---
 
 ## 5. Fonctionnement détaillé
 
-### 5.1 Envoi de message
+### 5.1 Cycle d'une lettre
 ```
-Joueur tape: /msg Steve Salut comment ça va ?
+1. ENVOI (Alice)
+   - Tape: /lettre Steve Salut comment ça va ?
+   - Vérification: Alice a-t-elle 10 cols ?
+   - Déduction: 10 cols retirés du compte d'Alice
+   - Message: "Lettre envoyée à Steve pour 10 cols"
+   - Sauvegarde en base de données
 
-Si Steve est connecté:
-- Steve reçoit : [MP] Alice: Salut comment ça va ?
-- Alice reçoit : [MP -> Steve] Salut comment ça va ?
+2. RÉCEPTION (Steve - à sa prochaine connexion)
+   - Steve se connecte
+   - Vérification: A-t-il des lettres non livrées ?
+   - Création: Item "Lettre d'Alice" ajouté à son inventaire
+   - Notification: "Vous avez reçu 1 nouvelle lettre !"
+   - Marquage: Lettre marquée comme livrée en BDD
 
-Si Steve est hors ligne:
-- Message sauvegardé dans la BDD
-- Alice reçoit : Message envoyé à Steve (hors ligne)
+3. LECTURE (Steve)
+   - Clic droit sur "Lettre d'Alice"
+   - Ouverture: Livre avec le message formaté
+   - Contenu: Message + signature + date
 ```
 
-### 5.2 Réception de message
-```
-Steve se connecte:
-- Message: Vous avez 3 nouveaux messages privés
-- Son de notification
-- Tapez /messages pour les consulter
-```
+### 5.2 Avantages de cette approche
+- **Simple** : Une seule commande à retenir
+- **Immersif** : Objets physiques dans l'inventaire
+- **Pratique** : Pas de déplacement vers des boîtes
+- **Économique** : Coût raisonnable de 10 cols
+- **Persistant** : Les lettres restent dans l'inventaire
 
 ---
 
 ## 6. Règles de gestion
 
-### 6.1 Limitations
-- Maximum 10 messages par minute par joueur
-- Messages de 500 caractères maximum
-- Pas de messages vers soi-même
-- Bloquer les joueurs bannis
+### 6.1 Règles simples
+- **Coût fixe** : 10 cols par lettre (économique)
+- **Taille limite** : 200 caractères maximum (lisible)
+- **Délai de livraison** : Immédiat à la prochaine connexion
+- **Conservation** : Lettres dans l'inventaire jusqu'à destruction
 
-### 6.2 Modération
-- Log de tous les messages dans un fichier
-- Commande admin pour voir les messages d'un joueur
-- Possibilité de bloquer certains mots
+### 6.2 Limitations pratiques
+- **Anti-spam** : Maximum 5 lettres par minute par joueur
+- **Destinataire valide** : Le joueur doit exister sur le serveur
+- **Argent requis** : Vérification du solde avant envoi
+- **Inventaire plein** : Lettre envoyée au sol si inventaire plein
 
----
-
-## 7. Exemple de code
-
-### 7.1 Structure de base
-```java
-public class MessagePrivePlugin extends JavaPlugin {
-    
-    @Override
-    public void onEnable() {
-        // Initialiser la base de données
-        // Enregistrer les commandes
-        // Enregistrer les événements
-    }
-    
-    public void envoyerMessage(Player expediteur, String destinataire, String message) {
-        // Vérifier si le destinataire existe
-        // Sauvegarder en base
-        // Notifier si connecté
-    }
-}
-```
-
-### 7.2 Commande exemple
-```java
-@Override
-public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    if (!(sender instanceof Player)) return false;
-    
-    Player player = (Player) sender;
-    
-    if (args.length < 2) {
-        player.sendMessage("Usage: /msg <joueur> <message>");
-        return true;
-    }
-    
-    String destinataire = args[0];
-    String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-    
-    envoyerMessage(player, destinataire, message);
-    return true;
-}
-```
+### 6.3 Gestion automatique
+- **Lettres perdues** : Si inventaire plein, lettre droppée au sol
+- **Nettoyage BDD** : Suppression des lettres livrées après 7 jours
+- **Modération** : Log de toutes les lettres pour les admins
 
 ---
 
-## 8. Critères d'évaluation
 
-### 8.1 Fonctionnalités obligatoires (80 points)
-- [ ] Envoi de messages fonctionnel (25 points)
-- [ ] Sauvegarde en base de données (20 points)
-- [ ] Consultation des messages (20 points)
-- [ ] Notifications de base (15 points)
+## 7. Critères d'évaluation
 
-### 8.2 Fonctionnalités bonus (20 points)
-- [ ] Interface GUI (8 points)
-- [ ] Sons et effets (4 points)
-- [ ] Commandes admin (4 points)
-- [ ] Nettoyage automatique (4 points)
+### 7.1 Fonctionnalités obligatoires
+- [ ] Commande /lettre fonctionnelle
+- [ ] Vérification économique (coût 10 cols)
+- [ ] Création d'items "lettres" dans l'inventaire
+- [ ] Livraison à la connexion
+- [ ] Sauvegarde en base de données
 
----
+### 7.2 Fonctionnalités bonus
+- [ ] Interface de lecture soignée (livre formaté)
+- [ ] Gestion inventaire plein (drop au sol)
+- [ ] Anti-spam (limite 5 lettres/minute)
+- [ ] Commandes admin pour modération
 
-## 9. Tests à effectuer
-
-### 9.1 Tests de base
-- Envoyer un message à un joueur connecté
-- Envoyer un message à un joueur hors ligne
-- Se reconnecter et voir les nouveaux messages
-- Consulter l'historique des messages
-
-### 9.2 Tests avancés
-- Envoyer 50+ messages et vérifier la limite
-- Tester avec des caractères spéciaux
-- Vérifier le nettoyage automatique
-- Tester les notifications
+### 7.3 Simplicité d'usage
+- [ ] Une seule commande à retenir
+- [ ] Pas de craft complexe
+- [ ] Pas de déplacement requis
+- [ ] Réception automatique
 
 ---
 
-## 10. Livrables
+## 8. Tests à effectuer
 
-### 10.1 Code source
-- Plugin compilable avec toutes les fonctionnalités
-- Configuration de base de données
-- Documentation basique
+### 8.1 Tests de base
+- Envoyer une lettre avec `/lettre Steve Salut !`
+- Vérifier la déduction de 10 cols
+- Se connecter avec le compte du destinataire
+- Vérifier la réception de l'item "Lettre de [expéditeur]"
+- Clic droit sur la lettre pour lire le contenu
 
-### 10.2 Démonstration
-- Vidéo de 3-5 minutes montrant :
-  - Envoi de messages
-  - Consultation des messages
-  - Notifications
-  - Interface (si implémentée)
+### 8.2 Tests de limites
+- Tester sans argent suffisant
+- Tester avec message trop long (>200 caractères)
+- Tester avec destinataire inexistant
+- Tester avec inventaire plein (lettre au sol)
+- Tester l'anti-spam (>5 lettres/minute)
 
----
-
-## 11. Planning suggéré
-
-| Jour | Tâche |
-|------|-------|
-| 1 | Structure du plugin et base de données |
-| 2 | Commandes d'envoi et réception |
-| 3 | Interface de consultation |
-| 4 | Notifications et tests |
-| 5 | Interface GUI (bonus) et finitions |
-
-**Total estimé : 4-5 jours**
+### 8.3 Tests de persistance
+- Envoyer une lettre à un joueur hors ligne
+- Redémarrer le serveur
+- Se connecter avec le destinataire
+- Vérifier que la lettre est bien livrée
 
 ---
 
-## 12. Ressources utiles
+## 9 Livrables
 
-### 12.1 Documentation
-- [Bukkit CommandExecutor](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/command/CommandExecutor.html)
-- [Bukkit OfflinePlayer](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/OfflinePlayer.html)
-- [Tutoriel JDBC MySQL](https://www.w3schools.com/java/java_mysql.asp)
-
-### 12.2 Exemples de plugins similaires
-- EssentialsX Mail (pour inspiration)
-- PrivateMessage plugins sur SpigotMC
+### 9.1 Code source
+- Plugin complet
+- Documentation d'installation et configuration
 
 ---
-
-*Version simplifiée pour candidats débutants - SAO France*

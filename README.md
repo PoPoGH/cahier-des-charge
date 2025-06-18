@@ -13,11 +13,11 @@
 **Durée estimée** : 4 jours  
 **Description** : Téléportation simple entre villes découvertes avec coût et cooldown.
 
-### 💬 **Système de messages privés**
+### 💬 **Système de lettres et courrier**
 **Fichier** : `Cahier_des_charges_SIMPLE_Messages_Prives.md`  
 **Complexité** : ⭐⭐☆☆☆ (Débutant-Intermédiaire)  
-**Durée estimée** : 4-5 jours  
-**Description** : Messages privés avec stockage hors ligne et notifications simples.
+**Durée estimée** : 5 jours  
+**Description** : Système de courrier immersif avec objets physiques, boîtes aux lettres et délais réalistes.
 
 ### 🛒 **Système de boutique personnelle**
 **Fichier** : `Cahier_des_charges_SIMPLE_Boutique_Personnelle.md`  
@@ -64,7 +64,7 @@
 ### 🟢 Pour candidats débutants (0-1 an d'expérience)
 **Recommandé** : 
 - ✅ **Système de téléportation entre villes** (le plus simple)
-- ✅ **Système de messages privés** (bon exercice de BDD)
+- ✅ **Système de lettres et courrier** (immersion avec objets physiques)
 - ✅ **Système de boutique personnelle** (introduction au GUI et économie)
 
 ### 🟡 Pour candidats intermédiaires (1-2 ans d'expérience)
