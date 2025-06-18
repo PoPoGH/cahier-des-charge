@@ -14,10 +14,10 @@
 **Description** : Téléportation simple entre villes découvertes avec coût et cooldown.
 
 ### 💬 **Système de lettres et courrier**
-**Fichier** : `Cahier_des_charges_SIMPLE_Messages_Prives.md`  
+**Fichier** : `Cahier_des_charges_SIMPLE_Lettres_SAO.md`  
 **Complexité** : ⭐⭐☆☆☆ (Débutant-Intermédiaire)  
 **Durée estimée** : 5 jours  
-**Description** : Système de courrier immersif avec objets physiques, boîtes aux lettres et délais réalistes.
+**Description** : Système de courrier immersif avec objets physiques, une seule commande simple.
 
 ### 🛒 **Système de boutique personnelle**
 **Fichier** : `Cahier_des_charges_SIMPLE_Boutique_Personnelle.md`  

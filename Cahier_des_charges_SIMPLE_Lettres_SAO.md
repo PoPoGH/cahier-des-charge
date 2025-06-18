@@ -94,47 +94,7 @@ CREATE TABLE lettres_stats (
 
 ---
 
-## 5. Règles de gestion
-
-### 5.1 Tarification
-- **Coût fixe** : 10 cols par lettre envoyée
-- **Déduction automatique** : Vérification du solde avant envoi
-- **Pas de remboursement** : Lettres payées même si destinataire absent
-
-### 5.2 Restrictions
-- **Taille maximale** : 200 caractères par message
-- **Anti-spam** : Maximum 5 lettres par minute par joueur
-- **Destinataire valide** : Le joueur doit exister sur le serveur
-- **Argent requis** : Vérification obligatoire avant traitement
-
-### 5.3 Permissions
-- `lettres.send` - Envoyer des lettres (par défaut)
-- `lettres.receive` - Recevoir des lettres (par défaut)
-- `lettres.admin` - Voir les logs et statistiques
-
----
-
-## 6. Critères d'évaluation
-
-### 6.1 Fonctionnalités obligatoires (80 points)
-- [ ] Commande `/lettre` fonctionnelle (25 points)
-- [ ] Vérification économique (coût 10 cols) (15 points)
-- [ ] Création d'items "lettres" dans l'inventaire (20 points)
-- [ ] Livraison automatique à la connexion (15 points)
-- [ ] Sauvegarde en base de données (5 points)
-
-### 6.2 Fonctionnalités bonus (20 points)
-- [ ] Interface de lecture soignée (livre formaté) (8 points)
-- [ ] Gestion inventaire plein (drop au sol) (4 points)
-- [ ] Anti-spam (limite 5 lettres/minute) (4 points)
-- [ ] Commandes admin pour modération (4 points)
-
-### 6.3 Critères techniques
-- [ ] Code propre et documenté
-- [ ] Gestion des erreurs appropriée
-- [ ] Performance optimisée
-- [ ] Interface utilisateur intuitive
-- [ ] Integration économique fonctionnelle
+## 4. Interface utilisateur
 
 ### 4.1 Commandes principales
 - `/lettre <destinataire> <message>` - Envoyer une lettre
@@ -185,112 +145,89 @@ Clic droit sur une lettre → Ouvre le livre:
 
 ---
 
-## 5. Fonctionnement détaillé
+## 5. Règles de gestion
 
-### 5.1 Cycle d'une lettre
-```
-1. ENVOI (Alice)
-   - Tape: /lettre Steve Salut comment ça va ?
-   - Vérification: Alice a-t-elle 10 cols ?
-   - Déduction: 10 cols retirés du compte d'Alice
-   - Message: "Lettre envoyée à Steve pour 10 cols"
-   - Sauvegarde en base de données
+### 5.1 Tarification
+- **Coût fixe** : 10 cols par lettre envoyée
+- **Déduction automatique** : Vérification du solde avant envoi
+- **Pas de remboursement** : Lettres payées même si destinataire absent
 
-2. RÉCEPTION (Steve - à sa prochaine connexion)
-   - Steve se connecte
-   - Vérification: A-t-il des lettres non livrées ?
-   - Création: Item "Lettre d'Alice" ajouté à son inventaire
-   - Notification: "Vous avez reçu 1 nouvelle lettre !"
-   - Marquage: Lettre marquée comme livrée en BDD
-
-3. LECTURE (Steve)
-   - Clic droit sur "Lettre d'Alice"
-   - Ouverture: Livre avec le message formaté
-   - Contenu: Message + signature + date
-```
-
-### 5.2 Avantages de cette approche
-- **Simple** : Une seule commande à retenir
-- **Immersif** : Objets physiques dans l'inventaire
-- **Pratique** : Pas de déplacement vers des boîtes
-- **Économique** : Coût raisonnable de 10 cols
-- **Persistant** : Les lettres restent dans l'inventaire
-
----
-
-## 6. Règles de gestion
-
-### 6.1 Règles simples
-- **Coût fixe** : 10 cols par lettre (économique)
-- **Taille limite** : 200 caractères maximum (lisible)
-- **Délai de livraison** : Immédiat à la prochaine connexion
-- **Conservation** : Lettres dans l'inventaire jusqu'à destruction
-
-### 6.2 Limitations pratiques
+### 5.2 Restrictions
+- **Taille maximale** : 200 caractères par message
 - **Anti-spam** : Maximum 5 lettres par minute par joueur
 - **Destinataire valide** : Le joueur doit exister sur le serveur
-- **Argent requis** : Vérification du solde avant envoi
-- **Inventaire plein** : Lettre envoyée au sol si inventaire plein
+- **Argent requis** : Vérification obligatoire avant traitement
 
-### 6.3 Gestion automatique
-- **Lettres perdues** : Si inventaire plein, lettre droppée au sol
-- **Nettoyage BDD** : Suppression des lettres livrées après 7 jours
-- **Modération** : Log de toutes les lettres pour les admins
-
----
-
-
-## 7. Critères d'évaluation
-
-### 7.1 Fonctionnalités obligatoires
-- [ ] Commande /lettre fonctionnelle
-- [ ] Vérification économique (coût 10 cols)
-- [ ] Création d'items "lettres" dans l'inventaire
-- [ ] Livraison à la connexion
-- [ ] Sauvegarde en base de données
-
-### 7.2 Fonctionnalités bonus
-- [ ] Interface de lecture soignée (livre formaté)
-- [ ] Gestion inventaire plein (drop au sol)
-- [ ] Anti-spam (limite 5 lettres/minute)
-- [ ] Commandes admin pour modération
-
-### 7.3 Simplicité d'usage
-- [ ] Une seule commande à retenir
-- [ ] Pas de craft complexe
-- [ ] Pas de déplacement requis
-- [ ] Réception automatique
+### 5.3 Permissions
+- `lettres.send` - Envoyer des lettres (par défaut)
+- `lettres.receive` - Recevoir des lettres (par défaut)
+- `lettres.admin` - Voir les logs et statistiques
 
 ---
 
-## 8. Tests à effectuer
+## 6. Critères d'évaluation
 
-### 8.1 Tests de base
-- Envoyer une lettre avec `/lettre Steve Salut !`
-- Vérifier la déduction de 10 cols
-- Se connecter avec le compte du destinataire
-- Vérifier la réception de l'item "Lettre de [expéditeur]"
-- Clic droit sur la lettre pour lire le contenu
+### 6.1 Fonctionnalités obligatoires (80 points)
+- [ ] Commande `/lettre` fonctionnelle (25 points)
+- [ ] Vérification économique (coût 10 cols) (15 points)
+- [ ] Création d'items "lettres" dans l'inventaire (20 points)
+- [ ] Livraison automatique à la connexion (15 points)
+- [ ] Sauvegarde en base de données (5 points)
 
-### 8.2 Tests de limites
-- Tester sans argent suffisant
-- Tester avec message trop long (>200 caractères)
-- Tester avec destinataire inexistant
-- Tester avec inventaire plein (lettre au sol)
-- Tester l'anti-spam (>5 lettres/minute)
+### 6.2 Fonctionnalités bonus (20 points)
+- [ ] Interface de lecture soignée (livre formaté) (8 points)
+- [ ] Gestion inventaire plein (drop au sol) (4 points)
+- [ ] Anti-spam (limite 5 lettres/minute) (4 points)
+- [ ] Commandes admin pour modération (4 points)
 
-### 8.3 Tests de persistance
-- Envoyer une lettre à un joueur hors ligne
-- Redémarrer le serveur
-- Se connecter avec le destinataire
-- Vérifier que la lettre est bien livrée
+### 6.3 Critères techniques
+- [ ] Code propre et documenté
+- [ ] Gestion des erreurs appropriée
+- [ ] Performance optimisée
+- [ ] Interface utilisateur intuitive
+- [ ] Integration économique fonctionnelle
+
+---
+
+## 7. Livrables attendus
+
+### 7.1 Code source
+- Plugin complet avec toutes les fonctionnalités
+- Configuration de base de données
+- Documentation technique
+
+### 7.2 Documentation
+- Guide d'installation
+- Manuel utilisateur
+- Exemples de configuration
+
+### 7.3 Tests
+- Démonstration fonctionnelle
+- Tests de cas d'usage
+- Validation des performances
 
 ---
 
-## 9 Livrables
+## 8. Planning suggéré
 
-### 9.1 Code source
-- Plugin complet
-- Documentation d'installation et configuration
+| Phase | Durée | Description |
+|-------|-------|-------------|
+| Architecture | 1 jour | Conception technique et base de données |
+| Commande de base | 1 jour | Système d'envoi et validation |
+| Système de livraison | 1 jour | Réception et création d'items |
+| Interface de lecture | 1 jour | Livres formatés et interaction |
+| Tests et polish | 1 jour | Tests et corrections |
+
+**Total estimé : 5 jours**
 
 ---
+
+## 9. Contact et questions
+
+Pour toute question sur ce cahier des charges, veuillez contacter l'équipe de développement SAO France.
+
+**Bonne chance pour votre candidature !**
+
+---
+
+*Document créé le 18 juin 2025 pour le recrutement développeur SAO France*
